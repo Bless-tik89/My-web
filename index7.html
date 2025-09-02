@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JOSHRONICA'S | Trendy Clothing Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary:#ff3e6c; --secondary:#1e293b; --accent:#7e22ce; --light:#f8fafc; --dark:#0f172a; --success:#22c55e;
+      --card:#ffffff; --muted:#64748b; --ring:rgba(255,62,108,.15);
+      --gradient:linear-gradient(135deg, var(--primary), var(--accent));
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Montserrat',sans-serif; color:var(--dark); background:#fff; padding-top:80px; overflow-x:hidden
+    }
+    h1,h2,h3{font-family:'Playfair Display',serif; font-weight:700}
+    .container{width:92%;max-width:1200px;margin:0 auto}
+    
+    /* Header Styles */
+    #header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    #header.scrolled {
+      padding: 10px 0;
+    }
+    .navrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--dark);
+    }
+    .logo span {
+      color: var(--primary);
+    }
+    #nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+    #nav a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    #nav a:hover {
+      color: var(--primary);
+    }
+    .nav-cta {
+      background: var(--gradient);
+      color: white !important;
+      padding: 10px 20px;
+      border-radius: 30px;
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1500&q=80');
+      background-size: cover;
+      background-position: center;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 0 20px;
+    }
+    .hero-inner {
+      max-width: 800px;
+    }
+    .hero h2 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .cta {
+      background: var(--gradient);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: transform 0.3s;
+    }
+    .cta:hover {
+      transform: translateY(-3px);
+    }
+    
+    /* Section Titles */
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+      position: relative;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--gradient);
+      border-radius: 2px;
+    }
+    
+    /* Personalization Section */
+    .personalization {
+      padding: 80px 0;
+      background: var(--light);
+    }
+    .style-quiz {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .quiz-progress {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .quiz-progress-inner {
+      height: 100%;
+      width: 0%;
+      background: var(--gradient);
+      border-radius: 4px;
+      transition: width 0.5s;
+    }
+    .quiz-step {
+      display: none;
+    }
+    .quiz-step.active {
+      display: block;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 30px 0;
+    }
+    .style-option {
+      padding: 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .style-option.selected {
+      border-color: var(--primary);
+      background: rgba(255,62,108,0.05);
+    }
+    .style-option img {
+      max-width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    .btn {
+      padding: 12px 25px;
+      border-radius: 30px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn.primary {
+      background: var(--gradient);
+      color: white;
+    }
+    .btn.ghost {
+      background: transparent;
+      border: 2px solid var(--muted);
+      color: var(--muted);
+    }
+    .btn.ghost:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    /* Products Section */
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .search-box {
+      position: relative;
+      flex: 1;
+      max-width: 400px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 12px 20px 12px 45px;
+      border: 2px solid #e2e8f0;
+      border-radius: 30px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+    .category-chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      padding: 8px 20px;
+      background: #f1f5f9;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .chip.active {
+      background: var(--gradient);
+      color: white;
+    }
+    .sort-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: #f1f5f9;
+      border-radius: 30px;
+      cursor: pointer;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .thumb {
+      position: relative;
+      height: 250px;
+      overflow: hidden;
+    }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .card:hover .thumb img {
+      transform: scale(1.05);
+    }
+    .badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--primary);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .body {
+      padding: 20px;
+    }
+    .body h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    .desc {
+      color: var(--muted);
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    .price {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+    .actions {
+      padding: 0 20px 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .actions button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .actions .whatsapp {
+      background: #25D366;
+      color: white;
+    }
+    .actions .edit {
+      background: var(--accent);
+      color: white;
+    }
+    .actions .del {
+      background: #ef4444;
+      color: white;
+    }
+    
+    /* Sustainability Section */
+    .sustainability {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      padding: 60px 0;
+      text-align: center;
+    }
+    .sustainability-metric {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+    .metric-label {
+      color: var(--muted);
+      font-weight: 500;
+    }
+    
+    /* Virtual Fitting Room */
+    .virtual-fitting {
+      text-align: center;
+      padding: 60px 0;
+    }
+    .ar-preview {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .ar-preview img {
+      width: 100%;
+      display: block;
+    }
+    .ar-button {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gradient);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    /* Social Shopping */
+    .social-shopping {
+      background: var(--light);
+      padding: 80px 0;
+      text-align: center;
+    }
+    .live-event {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .live-header {
+      background: var(--gradient);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .live-countdown {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .live-badge {
+      background: white;
+      color: var(--primary);
+      padding: 5px 15px;
+      border-radius: 30px;
+      font-weight: 600;
+    }
+    .live-body {
+      padding: 30px;
+    }
+    .live-body img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    
+    /* Social Section */
+    .social {
+      background: var(--secondary);
+      color: white;
+      padding: 80px 0;
+      text-align: center;
+    }
+    .subtle {
+      color: #cbd5e1;
+      margin-bottom: 40px;
+    }
+    .icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      transition: transform 0.3s;
+      width: 120px;
+    }
+    .icon:hover {
+      transform: translateY(-5px);
+    }
+    .icon i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .facebook { background: #3b5998; }
+    .tiktok { background: #000000; }
+    .instagram { background: var(--gradient); }
+    .whatsapp { background: #25D366; }
+    
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 60px 0 30px;
+    }
+    .fgrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    footer h4 {
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+    footer p {
+      margin-bottom: 15px;
+      color: #cbd5e1;
+    }
+    footer a {
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    footer a:hover {
+      color: white;
+    }
+    footer i {
+      margin-right: 10px;
+      color: var(--primary);
+    }
+    .copy {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid #334155;
+      color: #94a3b8;
+    }
+    
+    /* AI Assistant */
+    .ai-assistant {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: var(--gradient);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+    .ai-chatbot {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 350px;
+      height: 450px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: all 0.3s;
+    }
+    .ai-chatbot.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .chat-header {
+      padding: 20px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .message {
+      padding: 10px 15px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      max-width: 80%;
+    }
+    .message.bot {
+      background: #f1f5f9;
+      border-bottom-left-radius: 5px;
+    }
+    .message.user {
+      background: var(--gradient);
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 5px;
+    }
+    .chat-input {
+      padding: 15px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      gap: 10px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 30px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    /* AR Overlay */
+    .ar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .ar-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .ar-container {
+      width: 90%;
+      max-width: 1000px;
+      height: 80vh;
+      background: #1e293b;
+      border-radius: 20px;
+      position: relative;
+    }
+    .ar-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    /* Admin Button */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: 50px;
+      height: 50px;
+      background: var(--secondary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+    
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .panel {
+      width: 90%;
+      max-width: 600px;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .content {
+      padding: 30px;
+    }
+    .form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .full {
+      grid-column: 1 / -1;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .drop {
+      border: 2px dashed #d8dee9;
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+    }
+    footer {
+      padding: 20px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .menu-toggle {
+        display: block;
+      }
+      #nav {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: clip-path 0.4s;
+      }
+      #nav.active {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+      #nav ul {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .hero h2 {
+        font-size: 2.5rem;
+      }
+      .quiz-options {
+        grid-template-columns: 1fr;
+      }
+      .products-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        max-width: 100%;
+      }
+      .ai-chatbot {
+        width: 90%;
+        right: 5%;
+        bottom: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header id="header">
+    <div class="container navrow">
+      <div class="logo">JOSHRONICA'S <span>STORE</span></div>
+      <nav id="nav">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#virtual-fitting">Virtual Try-On</a></li>
+          <li><a href="#social">Connect</a></li>
+          <li><a class="nav-cta" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="hero-inner">
+      <h2>Style That Makes You Stand Out</h2>
+      <p>Discover the latest fashion trends and express your unique style with our exclusive collections.</p>
+      <a href="#products" class="cta">Explore Collection</a>
+    </div>
+  </section>
+
+  <!-- Style Quiz -->
+  <section class="personalization">
+    <div class="container">
+      <h2 class="section-title">Find Your Personal Style</h2>
+      <div class="style-quiz">
+        <div class="quiz-progress">
+          <div class="quiz-progress-inner" id="quizProgress"></div>
+        </div>
+        <div class="quiz-step active" id="step1">
+          <h3>What's your fashion vibe?</h3>
+          <div class="quiz-options">
+            <div class="style-option" onclick="nextQuizStep(2)">
+              <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=300&q=80" alt="Casual">
+              <p>Casual & Comfortable</p>
+            </div>
+            <div class="style-option" onclick="nextQuizStep(2)">
+              <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=300&q=80" alt="Elegant">
+              <p>Elegant & Formal</p>
+            </div>
+            <div class="style-option" onclick="nextQuizStep(2)">
+              <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=300&q=80" alt="Bohemian">
+              <p>Bohemian & Free-spirited</p>
+            </div>
+            <div class="style-option" onclick="nextQuizStep(2)">
+              <img src="https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&w=300&q=80" alt="Edgy">
+              <p>Edgy & Bold</p>
+            </div>
+          </div>
+        </div>
+        <div class="quiz-step" id="step2">
+          <h3>What colors are you drawn to?</h3>
+          <div class="quiz-options">
+            <div class="style-option" onclick="nextQuizStep(3)">
+              <div style="height:120px; background:linear-gradient(to right, #000000, #434343); border-radius:8px; margin-bottom:10px;"></div>
+              <p>Neutrals & Earth Tones</p>
+            </div>
+            <div class="style-option" onclick="nextQuizStep(3)">
+              <div style="height:120px; background:linear-gradient(to right, #ff3e6c, #7e22ce); border-radius:8px; margin-bottom:10px;"></div>
+              <p>Bold & Vibrant</p>
+            </div>
+            <div class="style-option" onclick="nextQuizStep(3)">
+              <div style="height:120px; background:linear-gradient(to right, #3b82f6, #06b6d4); border-radius:8px; margin-bottom:10px;"></div>
+              <p>Cool & Pastel</p>
+            </div>
+            <div class="style-option" onclick="nextQuizStep(3)">
+              <div style="height:120px; background:linear-gradient(to right, #f97316, #eab308); border-radius:8px; margin-bottom:10px;"></div>
+              <p>Warm & Rich</p>
+            </div>
+          </div>
+          <div class="quiz-nav">
+            <button class="btn ghost" onclick="prevQuizStep(1)">Back</button>
+          </div>
+        </div>
+        <div class="quiz-step" id="step3">
+          <h3>How do you like your fit?</h3>
+          <div class="quiz-options">
+            <div class="style-option" onclick="completeQuiz()">
+              <img src="https://images.unsplash.com/photo-1520263115673-610416f52ab6?auto=format&fit=crop&w=300&q=80" alt="Relaxed">
+              <p>Relaxed & Oversized</p>
+            </div>
+            <div class="style-option" onclick="completeQuiz()">
+              <img src="https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?auto=format&fit=crop&w=300&q=80" alt="Fitted">
+              <p>Fitted & Tailored</p>
+            </div>
+            <div class="style-option" onclick="completeQuiz()">
+              <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?auto=format&fit=crop&w=300&q=80" alt="Mix">
+              <p>A Mix of Both</p>
+            </div>
+            <div class="style-option" onclick="completeQuiz()">
+              <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=300&q=80" alt="Statement">
+              <p>Statement Pieces</p>
+            </div>
+          </div>
+          <div class="quiz-nav">
+            <button class="btn ghost" onclick="prevQuizStep(2)">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="products" class="container" style="padding:56px 0">
+    <h2 class="section-title">Featured Products</h2>
+    <div class="products-header">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search products...">
+      </div>
+      <div class="category-chips" id="categoryChips">
+        <div class="chip active" data-cat="all">All</div>
+        <div class="chip" data-cat="women">Women</div>
+        <div class="chip" data-cat="men">Men</div>
+        <div class="chip" data-cat="accessories">Accessories</div>
+        <div class="chip" data-cat="footwear">Footwear</div>
+      </div>
+      <button class="sort-btn" id="sortBtn">
+        <i class="fa fa-arrow-down-a-z"></i> Sort A–Z
+      </button>
+    </div>
+    <div class="grid" id="grid">
+      <!-- Products will be rendered here by JavaScript -->
+    </div>
+  </section>
+
+  <!-- Sustainability -->
+  <section class="container">
+    <div class="sustainability">
+      <div class="sustainability-metric">
+        <div class="metric-value">87%</div>
+        <div class="metric-label">Sustainable Materials</div>
+      </div>
+      <div class="sustainability-metric">
+        <div class="metric-value">42%</div>
+        <div class="metric-label">Lower Carbon Footprint</div>
+      </div>
+      <div class="sustainability-metric">
+        <div class="metric-value">100%</div>
+        <div class="metric-label">Ethical Production</div>
+      </div>
+      <div class="sustainability-metric">
+        <div class="metric-value">5.2L</div>
+        <div class="metric-label">Water Saved per Item</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Virtual Fitting Room -->
+  <section id="virtual-fitting" class="container" style="padding:56px 0">
+    <h2 class="section-title">Virtual Fitting Room</h2>
+    <p class="subtle" style="text-align:center; margin-bottom:30px">Try before you buy with our AR technology</p>
+    <div class="ar-preview">
+      <img src="https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?auto=format&fit=crop&w=1000&q=80" alt="Virtual Try-On">
+      <a href="#" class="ar-button" onclick="openARView(); return false;">Try It On</a>
+    </div>
+  </section>
+
+  <!-- Social Shopping -->
+  <section class="social-shopping">
+    <div class="container">
+      <h2 class="section-title">Live Shopping Events</h2>
+      <div class="live-event">
+        <div class="live-header">
+          <div class="live-countdown">23:59:59</div>
+          <div class="live-badge">LIVE SOON</div>
+        </div>
+        <div class="live-body">
+          <img src="https://images.unsplash.com/photo-1560397743-24e23bfc9d53?auto=format&fit=crop&w=800&q=80" alt="Live Event">
+          <h3>Summer Collection Launch</h3>
+          <p>Join us for the exclusive launch of our summer collection with special guests, styling tips, and limited-time offers.</p>
+          <button class="btn primary">Set Reminder</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social -->
+  <section id="social" class="social">
+    <div class="container">
+      <h2 class="section-title">Connect With Us</h2>
+      <p class="subtle" style="color:#e2e8f0">Follow us for fresh drops, promos, and style inspo.</p>
+      <div class="icons">
+        <a class="icon facebook" href="https://www.facebook.com/profile.php?id=61579908930900" target="_blank" rel="noopener">
+          <i class="fab fa-facebook-f"></i><span>Facebook</span>
+        </a>
+        <a class="icon tiktok" href="https://www.tiktok.com/@veronicamapalo" target="_blank" rel="noopener">
+          <i class="fab fa-tiktok"></i><span>TikTok</span>
+        </a>
+        <a class="icon instagram" href="https://www.instagram.com/josh.ronica?igsh=ZGUzMzM3NWJiOQ==" target="_blank" rel="noopener">
+          <i class="fab fa-instagram"></i><span>Instagram</span>
+        </a>
+        <a class="icon whatsapp" href="https://chat.whatsapp.com/G5TUNNEJeok39ZZKnFH8on?mode=ac_t" target="_blank" rel="noopener">
+          <i class="fab fa-whatsapp"></i><span>WhatsApp Group</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="fgrid">
+        <div>
+          <h4>JOSHRONICA'S STORE</h4>
+          <p>Your premier destination for trendy and affordable fashion. We believe everyone deserves to look and feel their best.</p>
+          <p><i class="fas fa-phone"></i> +260972516177</p>
+          <p><i class="fas fa-envelope"></i> info@joshronica.com</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <p><a href="#home">Home</a></p>
+          <p><a href="#products">Products</a></p>
+          <p><a href="#virtual-fitting">Virtual Try-On</a></p>
+          <p><a href="#social">Connect</a></p>
+        </div>
+        <div>
+          <h4>Store Information</h4>
+          <p><i class="fas fa-map-marker-alt"></i> Lusaka, Zambia</p>
+          <p><i class="fas fa-clock"></i> Monday–Saturday: 9am–6pm</p>
+          <p><i class="fas fa-shopping-bag"></i> Sunday: Closed</p>
+        </div>
+      </div>
+      <div class="copy">&copy; <span id="year"></span> JOSHRONICA'S STORE. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- AI Assistant -->
+  <div class="ai-assistant" id="aiAssistant">
+    <i class="fas fa-robot"></i>
+  </div>
+
+  <div class="ai-chatbot" id="aiChatbot">
+    <div class="chat-header">
+      <h3>Style Assistant</h3>
+      <button class="ghost" onclick="closeChat()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot">
+        Hi there! I'm your personal style assistant. How can I help you today?
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Ask me anything..." id="chatInput">
+      <button class="primary" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- AR Try-On Overlay -->
+  <div class="ar-overlay" id="arOverlay">
+    <div class="ar-container">
+      <div class="ar-close" onclick="closeAR()"><i class="fas fa-times"></i></div>
+      <div style="width:100%; height:100%; display:grid; place-items:center; color:white;">
+        <div style="text-align:center;">
+          <i class="fas fa-vr-cardboard" style="font-size:60px; margin-bottom:20px;"></i>
+          <h2>AR Try-On Experience</h2>
+          <p>Point your camera at a clear space to see how items look on you</p>
+          <button class="btn primary" style="margin-top:20px;">Start AR Experience</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Floating Button -->
+  <div class="fab" id="adminBtn" title="Admin"><i class="fas fa-lock"></i></div>
+
+  <!-- Admin Modal -->
+  <div class="modal" id="modal">
+    <div class="panel">
+      <header class="navrow container" style="padding:12px 18px">
+        <h3 id="formTitle">Add Product</h3>
+        <button class="ghost" id="closeModal"><i class="fa fa-xmark"></i></button>
+      </header>
+      <div class="content">
+        <form id="productForm" class="form">
+          <input type="hidden" id="productId">
+          <div class="full">
+            <label>Product Name
+              <input id="name" type="text" placeholder="e.g., Floral Summer Dress" required>
+            </label>
+          </div>
+          <div>
+            <label>Price (K)
+              <input id="price" type="number" step="0.01" placeholder="e.g., 320" required>
+            </label>
+          </div>
+          <div>
+            <label>Category
+              <select id="category" required>
+                <option value="women">Women's Fashion</option>
+                <option value="men">Men's Fashion</option>
+                <option value="accessories">Accessories</option>
+                <option value="footwear">Footwear</option>
+              </select>
+            </label>
+          </div>
+          <div class="full">
+            <label>Description
+              <textarea id="desc" placeholder="Short product description..." required></textarea>
+            </label>
+          </div>
+          <div class="full">
+            <label>Image
+              <div id="drop" class="drop">
+                <input id="imageInput" type="file" accept="image/*" style="display:none">
+                <p><i class="fa fa-image"></i> Click or drop an image here</p>
+                <img id="preview" alt="" style="margin-top:10px; max-height:180px; display:none; border-radius:10px"/>
+              </div>
+            </label>
+          </div>
+        </form>
+      </div>
+      <footer>
+        <button class="ghost" id="cancelBtn">Cancel</button>
+        <button class="primary" id="saveBtn">Save Product</button>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Data & Seed ----------
+    const WA_PHONE = "+260972516177";
+    const STORAGE_KEY = "joshronica_products_v2";
+    const DEFAULTS = [
+      {name:"Designer Denim Jacket", price:450, category:"women", badge:"New", desc:"Premium quality denim jacket with unique embroidery details.", img:"https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=900&q=80"},
+      {name:"Floral Summer Dress", price:320, category:"women", desc:"Lightweight and comfortable dress perfect for summer days.", img:"https://images.unsplash.com/photo-1529903384028-929ae5dccdf1?auto=format&fit=crop&w=900&q=80"},
+      {name:"Classic Casual Shirt", price:280, category:"men", badge:"Popular", desc:"100% cotton shirt with premium finish and comfortable fit.", img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80"},
+      {name:"Sports Wear Set", price:390, category:"men", desc:"High-performance sportswear for your active lifestyle.", img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=80"},
+      {name:"Elegant Evening Gown", price:620, category:"women", badge:"Elegant", desc:"Stunning gown for special occasions with exquisite detailing.", img:"https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?auto=format&fit=crop&w=900&q=80"},
+      {name:"Fashion Accessories Set", price:180, category:"accessories", desc:"Complete your look with our premium accessory collection.", img:"https://images.unsplash.com/photo-1611010344444-5f9e4d86a6e1?auto=format&fit=crop&w=900&q=80"}
+    ];
+    function loadProducts(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){ saveProducts(DEFAULTS.map(seedWrap)); return DEFAULTS.map(seedWrap); }
+      try { return JSON.parse(raw); } catch { saveProducts(DEFAULTS.map(seedWrap)); return DEFAULTS.map(seedWrap); }
+    }
+    function saveProducts(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+    function seedWrap(p){ return {...p, id:Date.now()+Math.random()} }
+
+    // ---------- Elements ----------
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('searchInput');
+    const categoryChips = document.getElementById('categoryChips');
+    const sortBtn = document.getElementById('sortBtn');
+    const adminBtn = document.getElementById('adminBtn');
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('closeModal');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const formTitle = document.getElementById('formTitle');
+    const form = document.getElementById('productForm');
+    const idEl = document.getElementById('productId');
+    const nameEl = document.getElementById('name');
+    const priceEl = document.getElementById('price');
+    const categoryEl = document.getElementById('category');
+    const descEl = document.getElementById('desc');
+    const drop = document.getElementById('drop');
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+
+    // ---------- State ----------
+    let products = loadProducts();
+    let filter = { q:'', cat:'all', sort:'az' };
+    let admin = false;
+
+    // ---------- Render ----------
+    function formatPrice(k){ return `K ${(+k).toFixed(2)}`; }
+    function matches(p){
+      const q = filter.q.trim().toLowerCase();
+      const catOk = filter.cat === 'all' || p.category === filter.cat;
+      const qOk = !q || [p.name,p.desc,p.category].join(' ').toLowerCase().includes(q);
+      return catOk && qOk;
+    }
+    function sortProducts(arr){
+      const copy = [...arr];
+      if(filter.sort==='az') copy.sort((a,b)=>a.name.localeCompare(b.name));
+      else if(filter.sort==='za') copy.sort((a,b)=>b.name.localeCompare(a.name));
+      else if(filter.sort==='lh') copy.sort((a,b)=>(+a.price)-(+b.price));
+      else if(filter.sort==='hl') copy.sort((a,b)=>(+b.price)-(+a.price));
+      return copy;
+    }
+    function card(p){
+      const el = document.createElement('div');
+      el.className = 'card reveal';
+      el.innerHTML = `
+        <div class="thumb">
+          <img src="${p.img}" alt="${p.name}">
+          ${p.badge ? `<div class="badge">${p.badge}</div>`:''}
+        </div>
+        <div class="body">
+          <h3>${p.name}</h3>
+          <p class="desc">${p.desc}</p>
+          <span class="price">${formatPrice(p.price)}</span>
+        </div>
+        <div class="actions">
+          <button class="whatsapp"><i class="fab fa-whatsapp"></i> Order</button>
+          ${admin ? `<button class="edit" title="Edit"><i class="fa fa-pen"></i></button>
+                     <button class="del" title="Delete"><i class="fa fa-trash"></i></button>`:''}
+        </div>`;
+      el.querySelector('.whatsapp').onclick = () => {
+        const msg = encodeURIComponent(`Hello JOSHRONICA'S STORE! I want to order the ${p.name} for ${formatPrice(p.price)}. My size is: `);
+        window.open(`https://wa.me/${WA_PHONE}?text=${msg}`,'_blank');
+      };
+      if(admin){
+        el.querySelector('.edit').onclick = () => openEditor(p);
+        el.querySelector('.del').onclick = () => {
+          if(confirm('Delete this product?')){
+            products = products.filter(x=>x.id!==p.id);
+            saveProducts(products); render();
+          }
+        };
+      }
+      return el;
+    }
+    function render(){
+      grid.innerHTML = '';
+      const list = sortProducts(products.filter(matches));
+      if(!list.length){
+        const empty = document.createElement('div');
+        empty.className = 'reveal';
+        empty.style.gridColumn = '1/-1';
+        empty.style.textAlign = 'center';
+        empty.style.padding = '24px';
+        empty.innerHTML = `<p class="subtle">No products match your search.</p>`;
+        grid.appendChild(empty);
+      } else {
+        list.forEach(p => grid.appendChild(card(p)));
+      }
+      // reveal on mount
+      setTimeout(()=>{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('show'))},20);
+    }
+
+    // ---------- Filters ----------
+    searchInput.addEventListener('input', () => { filter.q = searchInput.value; render(); });
+    categoryChips.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.chip'); if(!btn) return;
+      categoryChips.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      btn.classList.add('active'); filter.cat = btn.dataset.cat; render();
+    });
+    let sortCycle = ['az','za','lh','hl'];
+    sortBtn.addEventListener('click', ()=>{
+      const i = sortCycle.indexOf(filter.sort);
+      filter.sort = sortCycle[(i+1)%sortCycle.length];
+      sortBtn.innerHTML = ({
+        az:'<i class="fa fa-arrow-down-a-z"></i> Sort A–Z',
+        za:'<i class="fa fa-arrow-down-z-a"></i> Sort Z–A',
+        lh:'<i class="fa fa-arrow-down-1-9"></i> Price Low–High',
+        hl:'<i class="fa fa-arrow-down-9-1"></i> Price High–Low'
+      })[filter.sort];
+      render();
+    });
+
+    // ---------- Admin ----------
+    function requireAdmin(){
+      if(admin) return true;
+      const pass = prompt('Enter admin password:');
+      if(pass==='admin123'){ admin = true; alert('Admin mode enabled'); render(); return true; }
+      if(pass) alert('Incorrect password');
+      return false;
+    }
+    adminBtn.addEventListener('click', ()=>{
+      if(!requireAdmin()) return;
+      openEditor();
+    });
+
+    function openEditor(item){
+      formTitle.textContent = item ? 'Edit Product' : 'Add Product';
+      idEl.value = item?.id || '';
+      nameEl.value = item?.name || '';
+      priceEl.value = item?.price ?? '';
+      categoryEl.value = item?.category || 'women';
+      descEl.value = item?.desc || '';
+      preview.src = item?.img || '';
+      preview.style.display = item?.img ? 'block':'none';
+      modal.classList.add('show');
+    }
+    function closeEditor(){ modal.classList.remove('show'); form.reset(); preview.style.display='none'; }
+
+    closeModal.onclick = closeEditor; cancelBtn.onclick = closeEditor;
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeEditor(); });
+
+    // image input / drop
+    drop.addEventListener('click', ()=> imageInput.click());
+    drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.style.borderColor='var(--primary)' });
+    drop.addEventListener('dragleave', ()=>{ drop.style.borderColor='#d8dee9' });
+    drop.addEventListener('drop', (e)=>{ e.preventDefault(); drop.style.borderColor='#d8dee9'; handleFiles(e.dataTransfer.files) });
+    imageInput.addEventListener('change', ()=> handleFiles(imageInput.files));
+    function handleFiles(files){
+      const f = files?.[0]; if(!f) return;
+      const reader = new FileReader();
+      reader.onload = () => { preview.src = reader.result; preview.style.display='block'; };
+      reader.readAsDataURL(f);
+    }
+
+    // save
+    saveBtn.addEventListener('click', ()=>{
+      if(!nameEl.value || !priceEl.value || (!preview.src || preview.style.display==='none')){
+        alert('Please fill name, price and choose an image.'); return;
+      }
+      const obj = {
+        id: idEl.value ? Number(idEl.value) : Date.now(),
+        name: nameEl.value.trim(),
+        price: Number(priceEl.value),
+        category: categoryEl.value,
+        desc: descEl.value.trim(),
+        img: preview.src,
+        badge: undefined
+      };
+      const exists = products.some(p=>p.id==obj.id);
+      products = exists ? products.map(p=>p.id==obj.id?obj:p) : [...products, obj];
+      saveProducts(products);
+      closeEditor(); render();
+    });
+
+    // ---------- FUTURISTIC FEATURES ----------
+    
+    // AI Chatbot
+    const aiAssistant = document.getElementById('aiAssistant');
+    const aiChatbot = document.getElementById('aiChatbot');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    
+    aiAssistant.addEventListener('click', () => {
+      aiChatbot.classList.toggle('active');
+    });
+    
+    function closeChat() {
+      aiChatbot.classList.remove('active');
+    }
+    
+    function sendMessage() {
+      const message = chatInput.value.trim();
+      if (!message) return;
+      
+      // Add user message
+      addMessage(message, 'user');
+      chatInput.value = '';
+      
+      // Simulate AI response
+      setTimeout(() => {
+        let response = "I'm here to help with fashion advice!";
+        
+        if (message.toLowerCase().includes('size') || message.toLowerCase().includes('fit')) {
+          response = "Our sizes run true to size. I recommend checking our size guide for specific measurements.";
+        } else if (message.toLowerCase().includes('return') || message.toLowerCase().includes('exchange')) {
+          response = "We offer free returns within 30 days. Items must be unworn with original tags attached.";
+        } else if (message.toLowerCase().includes('delivery') || message.toLowerCase().includes('shipping')) {
+          response = "Standard delivery takes 3-5 business days. Express options are available at checkout.";
+        } else if (message.toLowerCase().includes('material') || message.toLowerCase().includes('fabric')) {
+          response = "We use sustainable materials including organic cotton, recycled polyester, and Tencel™ lyocell.";
+        }
+        
+        addMessage(response, 'bot');
+      }, 1000);
+    }
+    
+    function addMessage(text, sender) {
+      const messageEl = document.createElement('div');
+      messageEl.classList.add('message', sender);
+      messageEl.textContent = text;
+      chatMessages.appendChild(messageEl);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+    
+    // AR Try-On
+    function openARView() {
+      document.getElementById('arOverlay').classList.add('active');
+    }
+    
+    function closeAR() {
+      document.getElementById('arOverlay').classList.remove('active');
+    }
+    
+    // Style Quiz
+    function nextQuizStep(next) {
+      document.querySelectorAll('.quiz-step').forEach(step => step.classList.remove('active'));
+      document.getElementById(`step${next}`).classList.add('active');
+      document.getElementById('quizProgress').style.width = `${(next/3)*100}%`;
+    }
+    
+    function prevQuizStep(prev) {
+      document.querySelectorAll('.quiz-step').forEach(step => step.classList.remove('active'));
+      document.getElementById(`step${prev}`).classList.add('active');
+      document.getElementById('quizProgress').style.width = `${(prev/3)*100}%`;
+    }
+    
+    function completeQuiz() {
+      alert('Based on your preferences, we recommend checking out our Casual Collection and Earth Tone selections!');
+      nextQuizStep(1);
+    }
+    
+    // Style option selection
+    document.querySelectorAll('.style-option').forEach(option => {
+      option.addEventListener('click', function() {
+        this.classList.toggle('selected');
+      });
+    });
+    
+    // Live shopping countdown
+    function updateCountdown() {
+      // Simulated countdown for demo
+      const countdownEl = document.querySelector('.live-countdown');
+      if (countdownEl) {
+        const parts = countdownEl.textContent.split(':');
+        let hours = parseInt(parts[0]);
+        let minutes = parseInt(parts[1]);
+        let seconds = parseInt(parts[2]);
+        
+        seconds--;
+        if (seconds < 0) {
+          seconds = 59;
+          minutes--;
+          if (minutes < 0) {
+            minutes = 59;
+            hours--;
+            if (hours < 0) {
+              hours = 23;
+            }
+          }
+        }
+        
+        countdownEl.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+    }
+    
+    setInterval(updateCountdown, 1000);
+
+    // ---------- UX bits ----------
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('menuToggle').addEventListener('click', ()=>{
+      document.getElementById('nav').classList.toggle('active');
+    });
+    document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click', ()=>document.getElementById('nav').classList.remove('active')));
+    window.addEventListener('scroll', ()=>{
+      document.getElementById('header').classList.toggle('scrolled', window.scrollY>60);
+    });
+    // smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(link=>{
+      link.addEventListener('click', e=>{
+        const id = link.getAttribute('href'); if(!id || id==='#') return;
+        const el = document.querySelector(id); if(!el) return;
+        e.preventDefault();
+        window.scrollTo({top:el.offsetTop-76, behavior:'smooth'});
+      });
+    });
+
+    // ---------- Boot ----------
+    render();
+  </script>
+
+</body>
+</html>
