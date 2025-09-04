@@ -49,8 +49,7 @@ function addMessage(text, sender) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const chatInput = document.getElementById('user-input');
-    const sendButton = document.getElementById('send-button'); // <-- Get the button
-
+    const sendButton = document.querySelector('button.primary');
     if (chatInput) {
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
