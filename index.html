@@ -1332,39 +1332,6 @@
       aiChatbot.classList.remove('active');
     }
     
-    function sendMessage() {
-      const message = chatInput.value.trim();
-      if (!message) return;
-      
-      // Add user message
-      addMessage(message, 'user');
-      chatInput.value = '';
-      
-      // Simulate AI response
-      setTimeout(() => {
-        let response = "I'm here to help with fashion advice!";
-        
-        if (message.toLowerCase().includes('size') || message.toLowerCase().includes('fit')) {
-          response = "Our sizes run true to size. I recommend checking our size guide for specific measurements.";
-        } else if (message.toLowerCase().includes('return') || message.toLowerCase().includes('exchange')) {
-          response = "We offer free returns within 30 days. Items must be unworn with original tags attached.";
-        } else if (message.toLowerCase().includes('delivery') || message.toLowerCase().includes('shipping')) {
-          response = "Standard delivery takes 3-5 business days. Express options are available at checkout.";
-        } else if (message.toLowerCase().includes('material') || message.toLowerCase().includes('fabric')) {
-          response = "We use sustainable materials including organic cotton, recycled polyester, and Tencel™ lyocell.";
-        }
-        
-        addMessage(response, 'bot');
-      }, 1000);
-    }
-    
-    function addMessage(text, sender) {
-      const messageEl = document.createElement('div');
-      messageEl.classList.add('message', sender);
-      messageEl.textContent = text;
-      chatMessages.appendChild(messageEl);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
     
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') sendMessage();
