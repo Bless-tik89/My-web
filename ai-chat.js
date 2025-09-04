@@ -1,19 +1,28 @@
-// ai-chat.js
-// This file contains the improved chat function that calls your real AI
-
+// Simple, reliable chat function
 async function sendMessage() {
-    const chatInput = document.getElementById('user-input');
-    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
     const message = chatInput.value.trim();
     
     if (!message) return;
 
-    addMessage(message, 'user');
+    // Add user message
+    const userMessageEl = document.createElement('div');
+    userMessageEl.classList.add('message', 'user');
+    userMessageEl.textContent = message;
+    chatMessages.appendChild(userMessageEl);
+    
     chatInput.value = '';
     
-    addMessage("Thinking...", 'bot');
+    // Show "Thinking..." message
+    const thinkingEl = document.createElement('div');
+    thinkingEl.classList.add('message', 'bot');
+    thinkingEl.textContent = 'Thinking...';
+    chatMessages.appendChild(thinkingEl);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
     try {
+        // Call your Netlify function
         const response = await fetch('/.netlify/functions/chatbot', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -21,43 +30,35 @@ async function sendMessage() {
         });
 
         const data = await response.json();
-        chatMessages.removeChild(chatMessages.lastChild);
+        
+        // Remove "Thinking..." message
+        chatMessages.removeChild(thinkingEl);
 
-        if (data.aiResponse) {
-            addMessage(data.aiResponse, 'bot');
-        } else {
-            addMessage("Sorry, I couldn't get a response right now.", 'bot');
-        }
+        // Add AI response
+        const aiMessageEl = document.createElement('div');
+        aiMessageEl.classList.add('message', 'bot');
+        aiMessageEl.textContent = data.aiResponse || "Sorry, I couldn't get a response.";
+        chatMessages.appendChild(aiMessageEl);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
 
     } catch (error) {
-        console.error('Error:', error);
-        if (chatMessages.lastChild.textContent === 'Thinking...') {
-            chatMessages.removeChild(chatMessages.lastChild);
-        }
-        addMessage("Network error. Please try again.", 'bot');
+        // Remove "Thinking..." message
+        chatMessages.removeChild(thinkingEl);
+        
+        const errorEl = document.createElement('div');
+        errorEl.classList.add('message', 'bot');
+        errorEl.textContent = 'Network error. Please try again.';
+        chatMessages.appendChild(errorEl);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
 
-function addMessage(text, sender) {
-    const chatMessages = document.getElementById('chat-messages');
-    const messageEl = document.createElement('div');
-    messageEl.classList.add('message', sender);
-    messageEl.textContent = text;
-    chatMessages.appendChild(messageEl);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
+// Make sure Enter key works
 document.addEventListener('DOMContentLoaded', function() {
-    const chatInput = document.getElementById('user-input');
-    const sendButton = document.querySelector('button.primary');
+    const chatInput = document.getElementById('chatInput');
     if (chatInput) {
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
-    }
-    
-    // Add click event listener to the send button
-    if (sendButton) {
-        sendButton.addEventListener('click', sendMessage); // <-- Connect the button
     }
 });
