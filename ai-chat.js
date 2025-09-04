@@ -1,55 +1,64 @@
-// netlify/functions/chatbot.js
-exports.handler = async (event) => {
-  console.log('Function started');
-  
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
-  }
-
-  try {
-    const { userMessage } = JSON.parse(event.body);
-    console.log('User message:', userMessage);
-
-    const HF_API_KEY = process.env.HF_API_KEY;
-    console.log('API Key exists:', !!HF_API_KEY);
+// Simple, reliable chat function
+async function sendMessage() {
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+    const message = chatInput.value.trim();
     
-    const API_URL = 'https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1';
+    if (!message) return;
 
-    const prompt = `<s>[INST] You are a helpful, friendly customer service assistant for a clothing store. Answer the customer's question politely and helpfully in one short sentence. Customer's question: "${userMessage}" Your helpful response: [/INST]`;
-
-    console.log('Calling Hugging Face API...');
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${HF_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ inputs: prompt })
-    });
-
-    console.log('API response status:', response.status);
+    // Add user message
+    const userMessageEl = document.createElement('div');
+    userMessageEl.classList.add('message', 'user');
+    userMessageEl.textContent = message;
+    chatMessages.appendChild(userMessageEl);
     
-    if (!response.ok) {
-      throw new Error(`Hugging Face API error: ${response.status}`);
+    chatInput.value = '';
+    
+    // Show "Thinking..." message
+    const thinkingEl = document.createElement('div');
+    thinkingEl.classList.add('message', 'bot');
+    thinkingEl.textContent = 'Thinking...';
+    chatMessages.appendChild(thinkingEl);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    try {
+        // Call your Netlify function
+        const response = await fetch('/.netlify/functions/chatbot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userMessage: message })
+        });
+
+        const data = await response.json();
+        
+        // Remove "Thinking..." message
+        chatMessages.removeChild(thinkingEl);
+
+        // Add AI response
+        const aiMessageEl = document.createElement('div');
+        aiMessageEl.classList.add('message', 'bot');
+        aiMessageEl.textContent = data.aiResponse || "Sorry, I couldn't get a response.";
+        chatMessages.appendChild(aiMessageEl);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    } catch (error) {
+        // Remove "Thinking..." message
+        chatMessages.removeChild(thinkingEl);
+        
+        const errorEl = document.createElement('div');
+        errorEl.classList.add('message', 'bot');
+        errorEl.textContent = 'Network error. Please try again.';
+        chatMessages.appendChild(errorEl);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+}
 
-    const data = await response.json();
-    console.log('API response data:', JSON.stringify(data).substring(0, 200));
-    
-    const generatedText = data[0]?.generated_text || '';
-    const aiResponse = generatedText.split('[/INST]')[1]?.trim() || "I'm sorry, I didn't understand that.";
-
-    console.log('Final response:', aiResponse);
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ aiResponse })
-    };
-
-  } catch (error) {
-    console.error('Error:', error.message);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to get response from AI: ' + error.message })
-    };
-  }
-};
+// Make sure Enter key works
+document.addEventListener('DOMContentLoaded', function() {
+    const chatInput = document.getElementById('chatInput');
+    if (chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    }
+});
