@@ -26,8 +26,8 @@ I build solutions that:
 
 ### 📫 Let's Connect
 - **Website:** [joshronica.netlify.app](https://joshronica.netlify.app)
-- **Business Inquiries:** [Your Email]
-- **Portfolio:** [Your GitHub Projects]
+- **Business Inquiries:** [ singbless89@gmail.com]
+-
 
 ---
 
